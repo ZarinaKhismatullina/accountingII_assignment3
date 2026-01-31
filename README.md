@@ -1,4 +1,4 @@
-# Accounting II: Corporate Decision-Making and Quantitative Analysis. Assignment 2
+# Accounting II: Corporate Decision-Making and Quantitative Analysis. Assignment 3
 
 This project answers the question **does audit regulation vary systematically across countries?** by replicating the paper by Kleinman & Lin (2017)
 
