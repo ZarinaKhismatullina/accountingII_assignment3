@@ -32,6 +32,7 @@ suppressWarnings(suppressPackageStartupMessages({
 	library(modelsummary)
 	library(fixest)
 	library(gt)
+  library(car)
 }))
 
 
