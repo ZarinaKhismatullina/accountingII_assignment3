@@ -1,0 +1,25 @@
+# set the name of the project. This should be a short mnemonic and ideally
+# also the name of your repository
+project_name: accounting_II_assignment3
+
+# Output file names
+output_paper: output/paper_r.pdf
+
+# Possible values: debug, info, warn, error, fatal, off
+# The repo code only uses info and error levels so info is a good default
+log_level: info
+
+# Path to the log file - set to 'stdout' to log to console
+log_file: stdout
+
+# External data paths
+replication_dataset: data/external/replication_dataset.csv
+
+# File names for output objects that are used in multiple code steps
+# orbis_prepared: data/generated/orbis_prepared.parquet
+
+# Language dependent result objects
+results_r: output/results.rda
+
+# Language dependent quarto documents
+paper_r: paper/paper_r.qmd

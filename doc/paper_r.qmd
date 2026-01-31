@@ -1,0 +1,194 @@
+---
+title: |
+  | Accounting II: Corporate Decision-Making and Quantitative Analysis. Assignment 3: 
+  | Does audit regulation vary systematically across countries? \vspace{1cm}
+author: 
+  - name: Zarina Khismatullina (648579)
+    email: zarina.khismatullina@student.hu-berlin.de
+execute:
+  echo: false
+  message: false
+  warning: false
+format:
+  pdf:
+    documentclass: article
+    number-sections: true
+    toc: false
+    fig-cap-location: top
+fontsize: 11pt
+header-includes:
+  - \usepackage{setspace}\doublespacing
+  - \usepackage{indentfirst}
+  - \setlength{\parindent}{4em}
+  - \setlength{\parskip}{0em}
+  - \usepackage[hang,flushmargin]{footmisc}
+  - \usepackage{caption} 
+  - \captionsetup[table]{skip=12pt,font=bf}
+  - \captionsetup[figure]{skip=12pt,font=bf}
+  - \usepackage{threeparttable}
+  - \usepackage[margin=1in]{geometry}
+  - \usepackage{booktabs}
+  - \usepackage{placeins}
+  - \usepackage{pdflscape}
+  - \usepackage{pdflscape}
+  - \usepackage{adjustbox}
+  - \usepackage{float}
+  - \renewcommand{\arraystretch}{0.9}
+---
+
+```{r setup, message=FALSE, warning=FALSE, include=FALSE}
+library(tidyverse)
+library(glue)
+library(gt)
+
+
+load("../output/results.rda")
+```
+
+## Introduction
+
+This essay addresses the question: **does audit regulation vary systematically across countries?** by replicating and reassessing cross-country evidence on the determinants of national audit regulation.
+
+The analysis builds on two key papers. First, Brown, Preiato, and Tarca (2014) develop cross-country proxies for the enforcement of accounting standards, highlighting that formal rules alone are insufficient without credible institutional enforcement. Their work underscores the importance of country-level characteristics in shaping regulatory outcomes. Second, Kleinman and Lin (2017) explicitly examine audit regulation in an international setting, proposing that cultural values, religious influences, legal origin, and market development jointly explain cross-national variation in audit regulatory efforts.
+
+This report replicates the empirical approach of Kleinman et al. (2017), using the same audit regulation index and closely matching variable definitions and data sources. The results confirm that audit regulation varies systematically across countries, but not uniformly across institutional dimensions. Cultural values—particularly individualism—emerge as the most robust predictors of regulatory strength, while religious composition shows limited and unstable explanatory power.
+
+Importantly, the replication reveals considerable sensitivity to model specification and sample composition. Even modest changes in sample construction materially affect coefficient significance, suggesting that the original framework, while directionally informative, may be over-parameterized relative to the available cross-country observations.
+
+All data preparation scripts, analysis code, and replication materials are available in the project repository <https://github.com/ZarinaKhismatullina/accountingII_assignment3.git>.
+
+## Literature review
+
+The idea that audit regulation differs across countries is well established in the accounting and auditing literature. Early comparative studies focused on differences in political and economic systems, business practices and professional regulation, documenting substantial cross-national heterogeneity (e.g., Nobes, 1983; Mueller, 1967). Another prominent strand of literature explains differences in audit and accounting regulation through legal origin and financial development. The law-and-finance literature (La Porta et al., 1998) argues that common-law countries tend to provide stronger investor protection and more market-oriented regulation than civil-law countries. Empirical studies find that stronger legal systems and more developed capital markets are associated with lower earnings management, higher-quality financial reporting, and greater enforcement intensity (Ball, 2006; Leuz et al., 2003).
+
+A key contribution to this literature is Brown et al. (2014), who argue that enforcement is a critical but often under-measured component of financial reporting systems. The authors develop an index that measures country differences in the institutional setting for financial reporting enforcement and auditing, documenting substantial cross‐sectional variation across 51 countries. Their findings challenge the view that global accounting harmonization alone can produce comparable reporting outcomes, highlighting instead the role of national institutions in shaping regulatory effectiveness. They also show that enforcement is strongly associated with legal institutions, market development, and political economy factors, but that no single dimension fully accounts for observed differences.
+
+While Brown et al. (2014) provide compelling evidence that countries differ in audit regulation and enforcement, their primary focus is classificatory. A natural extension of this work is to examine whether these differences are systematic—namely, whether variation in audit regulation can be explained by stable country characteristics that theory predicts should influence regulatory demand and design.
+
+Kleinman et al. (2017) address this question directly by examining the impact of cultural, religious, legal, and economic factors on national audit regulation. Building on institutional theory, they argue that audit regulation reflects societal preferences regarding transparency, external monitoring, and the role of formal institutions. From this perspective, cultural values, religious norms, and legal traditions serve as proxies for deeper social and institutional forces that shape regulatory outcomes. Their hypotheses are summarized in Table 1. Using a composite audit regulation index by Brown et al. (2014), they show that indeed individualism, the perceived importance of religion, legal origin and market liquidity are consistently associated with audit.
+
+![](../output/tab1_hypotheses.png){fig-align="center" width="100%"}
+
+Overall, Brown et al. (2014) demonstrate the existence and persistence of cross-country differences in audit enforcement, while Kleinman et al. (2017) show that these differences can be partially explained by cultural, religious, legal, and economic institutions. At the same time, the limited ability of these factors to explain regulatory change highlights the complexity of audit regulation as an institutional outcome, motivating careful replication and reassessment of existing findings, as I attempt to do in this project.
+
+## Data and methodology
+
+This study replicates and extends the empirical framework of Kleinman et al. (2017), which builds on the audit regulation and enforcement index developed by Brown et al. (2014). The original study covers 51 countries for the years 2002, 2005, and 2008; however, due to data availability constraints in the explanatory variables, Kleinman and Lin reduce their effective sample to 46 countries. Table 2 reports the list of countries included in Brown et al. (2014), highlighting those excluded in subsequent analyses due to missing data.
+
+![](../output/tab2_countries.png){fig-align="center" width="349"}
+
+\FloatBarrier
+
+For the present replication, data were collected manually from the same primary sources cited by the original paper wherever possible. A detailed description of all variables, definitions, and data sources is provided in Appendix 1. After collection, all datasets were manually merged into a single file, `replication_data.csv`.
+
+As shown in Table 3, the replication dataset contains up to 46 country-level observations for most variables. However, several variables exhibit reduced coverage. Accordingly, **the final replication subse**t used in this replication comprises 32 countries that meet two criteria: (i) inclusion in Kleinman et al. (2017), and (ii) complete data availability across all variables. However, there are three countries (Argentina, Hong Kong, and Romania) that were not included in the original paper but exhibit complete data in the replication dataset. Following that, an additional sample (N = 35) including these countries is constructed, hereinafter referred to as **the alternative replication subset**. Despite the limitations, the core structure of the sample remains comparable.
+
+![](../output/tab3_descriptive.png){fig-align="center" width="100%"}
+
+\FloatBarrier
+
+Prior to regression analysis, pairwise Pearson correlation matrices were examined (Table 4) to assess bivariate relationships between the dependent variables and explanatory factors. Similar to Kleinman and Lin, several cultural and religious variables exhibit moderate correlations; however, no correlation coefficients suggest problematic redundancy.
+
+To formally assess multicollinearity, Variance Inflation Factors (VIFs) were computed for all model specifications. All VIF values remain well below conventional thresholds (typically 10; Kennedy, 2000), indicating that multicollinearity does not materially distort coefficient estimates. This finding aligns closely with Kleinman and Lin’s conclusion that, despite conceptual overlap among cultural and religious variables, multicollinearity is not a significant concern in this setting.
+
+The empirical analysis proceeds in two stages. First, ordinary least squares regressions are estimated using the level of audit regulation and enforcement in 2008 (*AUDIT2008*) as the dependent variable. Second, a change specification is estimated using the first difference in audit regulation between 2002 and 2008 (ChAUDIT08_02), capturing changes in regulatory intensity over time. Authors argue that cultural and religious elements as well as LEGAL variable are not expected to significantly change over this short period, in contrast to market liquidity from 2002 to2008, thus the change in market liquidity (DIF_LIQUID08_02) is included in the second stage.
+
+Regressions are estimated for both the final replication subset (N = 32) and the alternative replication subset (N = 35), allowing an assessment of robustness to sample composition.
+
+The baseline regression model for audit regulation levels is specified as:
+
+$AUDIT2008_i =\beta_0+ \beta_1 IND_i+ \beta_2 PD_i+ \beta_3 UA_i+ \beta_4 PROT\_PCT_i+ \beta_5 BUDH\_PCT_i+ \beta_6 ISLM\_PCT_i+ \beta_7 HIND\_PCT_i+ \beta_8 RELG\_OTH_i+ \beta_9 RELIGION_IMPORTANT_i+ \beta_{10} LEGAL_i+ \beta_{11} MARKET_LIQUIDITY2008_i+ \varepsilon_i$
+
+The change specification follows:
+
+$ChAUDIT08\_02_i =\beta_0+ \beta_1 IND_i+ \beta_2 PD_i+ \beta_3 UA_i+ \beta_4 PROT\_PCT_i+ \beta_5 BUDH\_PCT_i+ \beta_6 ISLM\_PCT_i+ \beta_7 HIND\_PCT_i+ \beta_8 RELG\_OTH_i+ \beta_9 RELIGION_IMPORTANT_i+ \beta_{10} LEGAL_i+ \beta_{11} DIF_LIQUID08_02_i+ \varepsilon_i$
+
+Consistent with the original study, CHRST_OTH (non-Protestant Christian populations) is omitted from the regressions and serves as the reference group for religious composition. This choice avoids perfect multicollinearity, as religious population shares sum to 100 percent within each country.
+
+::: landscape
+![](../output/tab4_correlations.png){fig-align="center" width="100%"}
+:::
+
+\FloatBarrier
+
+## Results and discussion
+
+Table 5 reports the OLS estimates for audit regulation levels in 2008.
+
+Regarding cultural variables, Individualism (IND) emerges as the most robust predictor of audit regulation levels, remaining positive and statistically significant across both samples. This result supports the authors’ rejection of the null hypothesis that national culture is unrelated to audit regulation. As argued by Kleinman and Lin, more individualistic societies may demand stronger formal enforcement mechanisms to substitute for weaker informal social controls. In contrast, Power Distance (PD) and Uncertainty Avoidance (UA) are not statistically significant in any specification, consistent with the original study.
+
+Religious composition variables display weaker and less stable effects. In the final replication subset, Protestant (%) and Hindu (%) are negatively associated with audit regulation at conventional significance levels, relative to the omitted reference group (Other Christian denominations). However, these effects disappear once the alternative subset is used. This sensitivity to the inclusion of only three additional countries suggests that the estimated effects of religious shares are not robust and may be driven by sample composition rather than systematic relationships.
+
+Similarly, Religion Importance enters with a negative coefficient across all level regressions, consistent in sign with Kleinman et al. (2017), but fails to reach conventional significance thresholds. While the direction aligns with the authors’ interpretation—that stronger intrinsic religiosity may reduce reliance on formal regulatory enforcement—the lack of statistical significance in the replication weakens support for this hypothesis.
+
+Among institutional and economic controls, Market liquidity (2008) is positive and statistically significant in both level regressions, although the magnitude and significance decline in the alternative subset. This finding is fully consistent with the original paper and supports the argument that more liquid markets require stronger audit regulation to sustain investor confidence. Legal origin is positive but statistically insignificant, deviating from the original results and suggesting that legal system effects may be sensitive to sample size and model specification.
+
+![](../output/tab5_results.png){fig-align="center" width="100%"}
+
+\FloatBarrier
+
+The change regressions yield substantially weaker results, in line with the findings of Kleinman and Lin. As shown in Table 5, the explanatory power of the models drops sharply, with adjusted R² values below 0.25, indicating limited ability of cultural, religious, legal, and economic variables to explain short-term changes in audit regulation. Compared with Kleinman et al. (2017), the replication produces qualitatively similar conclusions but shows no significant results.
+
+Overall, the replication confirms the core insight of the original paper: audit regulation exhibits systematic cross-country differences that are strongly associated with national culture—particularly individualism—and market development.
+
+However, the replication also highlights instability and sensitivity in the estimated effects of religious composition and legal origin. The disappearance of significance when moving from N = 32 to N = 35 indicates that the results are sensitive to small changes in sample composition. Given the low degrees of freedom and the large number of regressors relative to sample size, this instability likely reflects over-conditioning rather than genuine structural differences.
+
+In particular, religious population shares and religion importance may capture overlapping latent mechanisms related to social norms, trust, and informal enforcement. Including both sets of variables simultaneously may dilute their individual explanatory power and reduce statistical stability.
+
+From this perspective, the instability of religious coefficients does not necessarily contradict the theoretical arguments of Kleinman and Lin but instead points to the need for more cautious specifications or alternative identification strategies.
+
+## Conclusion
+
+This study was motivated by the central question of whether audit regulation varies systematically across countries, beyond purely economic or legal explanations. To address this, I closely replicate the empirical framework of Kleinman et al. (2017) — itself built on Brown et al. (2014) — using the same period, comparable data sources, and aligned model specifications. The replication process involved reconstructing the original dataset, estimating both level and change OLS regressions, and evaluating robustness across alternative sample constructions.
+
+The results broadly confirm the original paper’s directional findings: Individualism and market liquidity are significant predictors of audit regulation levels, while they lose explanatory power in change regressions; hypotheses related to Power Distance, Uncertainty Avoidance, and most religious variables are consistently rejected.
+
+At the same time, the analysis reveals substantial sensitivity to sample composition, with several coefficients changing magnitude or significance wish even modest changes in sample composition. This highlights the limitations of conducting cross-country regressions with limited observations and a large set of explanatory variables.
+
+Nevertheless, the replication confirms the existence of systematic cross-national differences in audit regulation that cannot be explained solely by economic or legal factors. The study therefore supports the relevance of cultural and institutional explanations, while suggesting careful model selection, robustness analysis and cautious interpretations.
+
+## References
+
+Ball, R. (2006). International Financial Reporting Standards (IFRS): pros and cons for investors. Accounting and Business Research, 36(sup1), 5–27. <https://doi.org/10.1080/00014788.2006.9730040>
+
+Brown, P., Preiato, J. and Tarca, A. (2014), Measuring Country Differences in Enforcement of Accounting Standards: An Audit and Enforcement Proxy. Journal of Business Finance & Accounting, 41: 1-52. <https://doi.org/10.1111/jbfa.12066>
+
+Gallup.com (8/31/2010). Religiosity highest in world’s poorest nations. Available at <http://www.gallup.com/poll/142727/religiosity-highest-world-poorest-nations.aspx> (accessed 26 Jan 2026)
+
+Geert Hofstede’s website, <https://geerthofstede.com/research-and-vsm/dimension-data-matrix/>  (version 2015 12 08)
+
+Kennedy, P. (2000) A Guide to Econometrics, 4th ed. Cambridge, MA: Wiley-Blackwell.
+
+Kleinman, G., Lin, B.B. (2017). Audit regulation in an international setting: Testing the impact of religion, culture, market factors, and legal code on national regulatory efforts. Int J Discl Gov 14, 62–94. <https://doi.org/10.1057/s41310-016-0016-1>
+
+La Porta, R., Lopez-de-Silanes, F., Shleifer, A. and Vishny, R.W. (1998), Law and Finance. Journal of Political Economy, 106(6): 1113–1155. <https://doi.org/10.1086/250042>
+
+Leuz, C., Nanda, D. and Wysocki, P.D. (2003), Earnings management and investor protection: an international comparison. Journal of Financial Economics, 69(3): 505–527. <https://doi.org/10.1016/S0304-405X(03)00121-1>
+
+Mensah, Y.M. An Analysis of the Effect of Culture and Religion on Perceived Corruption in a Global Context. J Bus Ethics 121, 255–282 (2014). <https://doi.org/10.1007/s10551-013-1696-0>
+
+Mueller, G.G. (1967), International accounting. The Int. Exec., 9: 1-2. <https://doi.org/10.1002/tie.5060090401>
+
+Nobes, C.W. (1983), A Judgemental International Classification of Financial Reporting Practices. Journal of Business Finance & Accounting, 10: 1-19. <https://doi.org/10.1111/j.1468-5957.1983.tb00409.x>
+
+## Appendix 1. Variable symbols, names and measure
+
+*(Table 2 in Kleinman&Lin, 2017)*
+
+| **Symbol** | **Measure** |
+|-----------------------------------|-------------------------------------|
+| Audit enforcement (AUDIT2008) | Is the sum of auditing-related enforcement measures, as calculated and reported on in Brown et al. (2014). |
+| Change in audit enforcement (ChAUDIT08_02) | Change in audit enforcement index scores from 2002 to 2008 (AUDIT2008-AUDIT2002). |
+| Individual (IND) | Measure of Individualism/Collectivism, drawn from Hofstede's website <https://geerthofstede.com/research-and-vsm/dimension-data-matrix/> (version 2015 12 08). The higher the score on this measure, the greater the societal preference for individual self care-taking and responsibilities, as opposed to that on the collectivism end of the scale, where there is a greater preference for a more tightly knit social architecture. Higher scores indicate great |
+| Power distance (PD) | This dimension expresses the degree to which the less powerful members of a society accept and expect that power is distributed unequally. People in societies exhibiting a large degree of power distance accept a hierarchical order in which everybody has a place and which needs no further justification. In societies with low power distance, people strive to equalize the distribution of power and demand justification for inequalities of power. See reference to data source in IND. |
+| Uncertainty avoidance (UA) | Measure of the degree to which individuals dislike uncertainty and ambiguity. Higher scores indicate greater dislike (desire to avoid) uncertainty and ambiguity. See reference to data source in IND. |
+| Legal (LEGAL) | Measure of legal origin in sample nations, drawn from Brown et al (2014) based on work from La Porta et al. (1998). It equals 1 if the nation is a so-called common law nation; 0 otherwise. |
+| Protestant percentage (PROT_PCT) | Measures the percentage of the population describing themselves as of Christian Protestant faith. The specific data used were taken from Mensah (2014). Specific data sources used by Mensah include the CIA World Factbook, websites of individual countries, the Pew Foundation and Wikipedia.Org. Our use of Mensah’s data is subject to his disclaimer. He states that, given that the data cover the years from 2000 to 2011, it is assumed that the proportion of the population professing a specific religion remained constant over this period of time. |
+| Christian other percentage (CHRST_OTH) | Measures the percentage of the population describing themselves as other Christian but not Protestant (i.e., Roman Catholic, Greek and Russian Orthodox, Coptic, etc.). See reference to data source in PROT_PCT. |
+| Hindu percentage (HINDU_PCT) | Measures the percentage of the population describing themselves as of Hindi religious faith. See reference to data source in PROT_PCT. |
+| Buddhist percentage (BUDH_PCT) | Measures the percentage of the population describing themselves as of Buddhist religious faith. See reference to data source in PROT_PCT. |
+| Islamic percentage (ISLM_PCT) | Measures the percentage of the population describing themselves as of Islamic religious faith. See reference to data source in PROT_PCT. |
+| Other religion percentage (RELG_OTH) | Measures the percentage of the population describing themselves as belonging to a religion other than those specifically specified or individuals professing no religion. See reference to data source in PROT_PCT. |
+| Importance of religion (RELIGION_IMPORTANT) | The importance of religion data was taken from the Gallup Poll website at: <http://www.gallup.com/poll/142727/religiosity-highest-world-poorest-nations.aspx> |
+| Market liquidity in 2008 (MARKET_LIQUIDITY2008) | Market liquidity which is defined as the average total value of stocks traded as a percentage of GDP for the period 2005 to 2008. Source: [https://databank.worldbank.org/reports.aspx?source=world-development%20indicators#](https://databank.worldbank.org/reports.aspx?source=world-development%20indicators) |
+| Change in market liquidity (DIF_LIQUID08_02) | MARKET_LIQUIDITY2008 - MARKET_LIQUIDITY2002 (MARKET_LIQUIDITY2002 is defined as the average total value of stocks traded as a percentage of GDP for the period 1999 to 2002) |
