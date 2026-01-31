@@ -15,7 +15,7 @@ This repository is set up so that the entire analysis can be reproduced in a str
 
 To run the full pipeline, simply execute the following commands from the project root directory, in the order shown below:
 
-`Rscript --encoding=UTF-8 code/R/do_analysis.R` - Prepares and cleans the replication data and runs the main analysis on the prepared data and saves the remaining result tables.
+`Rscript --encoding=UTF-8 code/do_analysis.R` - Prepares and cleans the replication data and runs the main analysis on the prepared data and saves the remaining result tables.
 
 `quarto render doc/paper_r.qmd` - Builds the paper and inserts the saved tables into the final PDF output.
 
